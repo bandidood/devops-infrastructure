@@ -108,7 +108,7 @@ docker-compose up -d
 
 ## 🔄 Variante avec GitLab.com
 
-Si vous préférez utiliser GitLab.com au lieu de l'installation Docker locale, consultez le fichier [docker-compose-gitlab-com.yml](docker-compose-gitlab-com.yml) et les instructions dans [GITLAB-COM.md](GITLAB-COM.md).
+Si vous préférez utiliser GitLab.com au lieu de l'installation Docker locale, consultez le fichier [docker-compose-gitlab-com.yml](docker-compose-gitlab-com.yml) et les instructions dans [gitlab-com-instruction.md](gitlab-com-instruction.md).
 
 ## 📝 Licence
 
