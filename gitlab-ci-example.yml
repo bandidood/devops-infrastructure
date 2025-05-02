@@ -1,0 +1,66 @@
+stages:
+  - build
+  - test
+  - deploy
+
+variables:
+  DOCKER_REGISTRY: localhost:5000
+  IMAGE_NAME: $DOCKER_REGISTRY/my-app
+  IMAGE_TAG: $CI_COMMIT_SHORT_SHA
+
+# Job pour construire l'application
+build_app:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build -t $IMAGE_NAME:$IMAGE_TAG .
+    - docker push $IMAGE_NAME:$IMAGE_TAG
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# Job pour exécuter les tests
+run_tests:
+  stage: test
+  image: $IMAGE_NAME:$IMAGE_TAG
+  script:
+    - echo "Exécution des tests..."
+    - ./run_tests.sh
+  only:
+    - main
+    - develop
+    - merge_requests
+
+# Job pour déployer en environnement de développement
+deploy_dev:
+  stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo "Déploiement en environnement de développement..."
+    - docker pull $IMAGE_NAME:$IMAGE_TAG
+    - docker run -d --name my-app-dev $IMAGE_NAME:$IMAGE_TAG
+  environment:
+    name: development
+  only:
+    - develop
+
+# Job pour déployer en production
+deploy_prod:
+  stage: deploy
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - echo "Déploiement en production..."
+    - docker pull $IMAGE_NAME:$IMAGE_TAG
+    - docker run -d --name my-app-prod $IMAGE_NAME:$IMAGE_TAG
+  environment:
+    name: production
+  when: manual
+  only:
+    - main
