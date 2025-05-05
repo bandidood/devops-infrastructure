@@ -1,10 +1,10 @@
 # DevOps Infrastructure Kit
 
-Une solution complète pour mettre en place un environnement DevOps avec les outils essentiels dans des conteneurs Docker.
+Une solution complète pour mettre en place un environnement DevOps avec les outils essentiels dans des conteneurs Docker, avec support pour Windows.
 
 ## 🚀 Composants
 
-- **GitLab CE** : Plateforme complète de gestion de code source avec CI/CD intégré
+- **GitLab.com** : Plateforme complète de gestion de code source avec CI/CD intégré (version cloud)
 - **Jenkins** : Serveur d'automatisation pour la construction, les tests et le déploiement
 - **Portainer** : Interface de gestion Docker facile à utiliser
 - **Registry Docker** : Registre privé pour stocker vos images Docker
@@ -13,21 +13,23 @@ Une solution complète pour mettre en place un environnement DevOps avec les out
 
 ## 🔧 Prérequis
 
-- Docker et Docker Compose installés sur votre machine
+- Docker et Docker Compose installés sur votre machine Windows
+- WSL2 configuré pour Docker Desktop (recommandé)
 - Au moins 4 Go de RAM disponible (8 Go recommandés)
 - 20 Go d'espace disque libre
+- Un compte GitLab.com (gratuit)
 
 ## 🏁 Installation
 
 1. Clonez ce dépôt:
    ```bash
-   git clone https://github.com/bandidood/devops-infrastructure.git
-   cd devops-infrastructure
+   git clone https://github.com/votre-username/devops-infrastructure-kit.git
+   cd devops-infrastructure-kit
    ```
 
 2. Créez les dossiers nécessaires pour la configuration:
    ```bash
-   mkdir -p data/{gitlab/{config,logs,data},jenkins,portainer,registry,prometheus,grafana}
+   mkdir -p data/{jenkins,portainer,registry,prometheus,grafana}
    mkdir -p config/prometheus
    ```
 
@@ -45,9 +47,9 @@ Une solution complète pour mettre en place un environnement DevOps avec les out
    EOF
    ```
 
-4. Démarrez les services:
+4. Démarrez les services (en utilisant le fichier docker-compose-gitlab-com.yml):
    ```bash
-   docker-compose up -d
+   docker-compose -f docker-compose-gitlab-com.yml up -d
    ```
 
 ## 📊 Accès aux services
@@ -56,7 +58,7 @@ Une fois les services démarrés, vous pouvez y accéder via les adresses suivan
 
 | Service    | URL                      | Identifiants par défaut         |
 |------------|--------------------------|--------------------------------|
-| GitLab     | http://localhost:8090    | `root` / Voir les instructions |
+| GitLab.com | https://gitlab.com       | Votre compte GitLab.com        |
 | Jenkins    | http://localhost:9080    | Voir les instructions          |
 | Portainer  | http://localhost:9000    | À créer lors du premier accès  |
 | Registry   | http://localhost:5000    | N/A                            |
@@ -65,10 +67,10 @@ Une fois les services démarrés, vous pouvez y accéder via les adresses suivan
 
 ### Instructions d'accès initiales
 
-#### GitLab
-1. Accédez à http://localhost:8090
-2. Lors de votre première visite, vous serez invité à définir un mot de passe pour l'utilisateur `root`
-3. Connectez-vous avec le nom d'utilisateur `root` et le mot de passe que vous avez défini
+#### GitLab.com
+1. Créez un compte ou connectez-vous à https://gitlab.com
+2. Créez un groupe et des projets selon vos besoins
+3. Générez un jeton d'accès personnel pour l'intégration avec Jenkins
 
 #### Jenkins
 1. Accédez à http://localhost:9080
@@ -77,6 +79,7 @@ Une fois les services démarrés, vous pouvez y accéder via les adresses suivan
    docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword
    ```
 3. Suivez l'assistant d'installation pour configurer Jenkins
+4. Installez le plugin GitLab pour l'intégration avec GitLab.com
 
 #### Portainer
 1. Accédez à http://localhost:9000
@@ -106,9 +109,13 @@ docker-compose up -d
 - GitLab nécessite une quantité significative de ressources. Si vous rencontrez des problèmes de performance, considérez l'augmentation des ressources allouées à Docker.
 - Par défaut, tous les services sont exposés uniquement à localhost. Pour une accessibilité externe, vous devrez modifier les configurations réseau.
 
-## 🔄 Variante avec GitLab.com
+## ⚙️ Configuration de l'intégration GitLab.com et Jenkins
 
-Si vous préférez utiliser GitLab.com au lieu de l'installation Docker locale, consultez le fichier [docker-compose-gitlab-com.yml](docker-compose-gitlab-com.yml) et les instructions dans [gitlab-com-instruction.md](gitlab-com-instruction.md).
+Pour une intégration efficace entre GitLab.com et Jenkins, consultez le guide détaillé dans [GITLAB-JENKINS-INTEGRATION.md](GITLAB-JENKINS-INTEGRATION.md).
+
+## 🖥️ Alternative - Installation locale de GitLab CE
+
+Si vous utilisez Linux ou souhaitez quand même déployer GitLab CE localement malgré les limitations sur Windows, consultez le fichier [GITLAB-CE-INSTALLATION.md](GITLAB-CE-INSTALLATION.md).
 
 ## 📝 Licence
 
