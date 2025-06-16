@@ -23,7 +23,7 @@ Une solution complète pour mettre en place un environnement DevOps avec les out
 
 1. Clonez ce dépôt:
    ```bash
-   git clone https://github.com/votre-username/devops-infrastructure-kit.git
+   git clone https://github.com/bandidood/devops-infrastructure-kit.git
    cd devops-infrastructure-kit
    ```
 
